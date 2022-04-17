@@ -1,112 +1,59 @@
 package tonwuaso_p3;
-
+import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Queue;
 
-public class CollectiveInfluence {
- //Ball(i,r)---> Ball(Node, Radius)
- //This method adds a ball to a node if it has been visited already
- // It is used to calculate the collective influence
-public static int Ball(int node, int radius) {
-	if(radius ==0)
-		return 0;
-
- //Make a queue using a linked list. Will be used to visit the ndoes in the graph
-	Queue<Integer> queue = new LinkedList<>();
-	boolean [] visited = new boolean[GraphLayout.graphLayout.vertex+1];
-	queue.add(node);
-	visited[node] = true; //If the node has been visited then the sum stays the same
-	int sum=0;
-	
-	//This analyzes the queue 
-	int dequeue = 1;
-	while(!queue.isEmpty() && radius > 0) {
-		//Count number of nodes needed to be dequeued for next round
-		int nextRoundDequeue = 0;
-		for(int i = dequeue; i > 0; i--) {
-			int currentNode = queue.poll();
-			//Add current node's neighbors to the queue for next round
-			for (int neighbor : GraphLayout.graphLayout.nodes.get(currentNode)) {
-				//add univsted nodes to visiting list
-				if(!visited[neighbor]) {
-					queue.add(neighbor);
-					visited[neighbor] = true;
-					sum += GraphLayout.graphLayout.nodes.get(neighbor).size() - 1;
-					nextRoundDequeue++;
-				}
-			}
-			
-		}
-		dequeue = nextRoundDequeue;
-		radius--; 
-	}
-	//Calculate collective influence
-	sum = sum * (GraphLayout.graphLayout.nodes.get(node).size()-1);
-	return sum;
+//This class sets the layout for the graph
+public class GraphLayout {
+   public static GraphLayout graphLayout = new GraphLayout();
+   
+   int vertex;
+   int degree;
+   ArrayList<LinkedList<Integer>> nodes;
+   
+   
+   //Constructor
+   public GraphLayout() {
+	   vertex = 0;
+	   degree = 0;
+	   nodes = new ArrayList<>();
+	   nodes.add(new LinkedList<>());
+   }
+   //Adds new LinkedList to list of nodes
+   public void addLinkedList(int size) {
+	   while (nodes.size() < size+1) {
+		   nodes.add(new LinkedList<>());
+		   vertex++;
+	   }
+   }
+   
+   //Forms adjacency list; contains connected vertices
+   public void addNode(int node, int adjNode) {
+	   if(nodes.size() < node+1) 
+		   addLinkedList(node);
+	   nodes.get(node).addLast(adjNode);   //Appends the specified element to the end of this list.
+	   if (nodes.size() < adjNode +1) addLinkedList(adjNode);
+	   nodes.get(adjNode).addLast(node);
+   }
+   
+   //Method removes node from graph and returns the updated list without the node
+   public LinkedList<Integer> removeNode(int node){
+	   for(int neighbor : nodes.get(node))
+		   nodes.get(neighbor).remove((Integer) node);
+	   @SuppressWarnings("unchecked")
+	   LinkedList<Integer> neighbors = (LinkedList<Integer>) nodes.get(node).clone(); //Creates and exact copy of the orginal object. Will help return the updated list witihout the node. 
+	   nodes.get(node).clear();
+	   return neighbors;
+		   
+   }
+   //Prints the graph
+   public static void printGraph() {
+	   for(int i =1; 1<= graphLayout.vertex; i++) {
+		   System.out.print(i + " : ");
+		   for(@SuppressWarnings("unused") int neighbor : graphLayout.nodes.get(i))
+			   System.out.println();
+	   }
+	   System.out.println();
+   }
+   
+   
 }
-//SigmaBall(i, r) --> i = node and r = radius 
-//SigmaBall = exact collective influence
-//This is a method to calculate the exact collective influence 
-//CI(i,r) = (countDegree(i)-1) * sum(countDegree for all elements of sigmaBall(i,r))
-public static int sigmaBall(int node, int radius) {
-	if (radius ==0)
-		return 0;
-	/* 
-	 * In order to detect the nodes that lie inside a given distance from another node, Breadth-first search is used here.
-	 * In this process, as we move further away from our starting node,
-	 * we keep count of the links we travel along.
-	 */
-	
-	//Make another queue using a linked list. Will be used to visit node in the graph
-	Queue<Integer> Queue = new LinkedList<>(GraphLayout.graphLayout.nodes.get(node));
-	boolean[] visited = new boolean[GraphLayout.graphLayout.vertex+1];
-	visited[node] = true;
-	//Enhanced for loop that helps iterate through all the elements
-	 for (int neighbor : GraphLayout.graphLayout.nodes.get(node))
-		 visited[neighbor] = true;
-	 int sum =0;
-	 
-	 //This analyzes the queue 
-	 int DQ = GraphLayout.graphLayout.nodes.get(node).size();
-	
-	 while(radius > 1) {
-		 //count number of nodes needed to be dequeued for nex
-		 int NextDQ =0;
-		 for(int i=DQ; i>0; i--) {
-			 int current = Queue.poll();
-			 //Add current node's neighbors to the queue for next round
-			 for(int neighbor : GraphLayout.graphLayout.nodes.get(current)) {
-				 //Add univisted nodes to visiting list
-				 if(!visited[neighbor]) {
-					 Queue.add(neighbor);
-					 visited[neighbor] = true; 
-					 
-					 NextDQ++;
-				 }
-			 }
-		 }
-		 DQ = NextDQ;
-		 radius--;
-	 }
-	
-	while(!Queue.isEmpty()) { //While the queue is empty, the neighbor is set to the head of the queue 
-		int neighbor = Queue.poll();
-		sum += GraphLayout.graphLayout.nodes.get(neighbor).size() -1;
-				
-	}
-	
-	//Calculate collective influence
-	sum = sum * (GraphLayout.graphLayout.nodes.get(node).size()-1);
-	return sum;
-	
-}
-
-
-
-
-
-
-}
-	
-	
-
