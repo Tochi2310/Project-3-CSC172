@@ -9,7 +9,7 @@ public class GraphLayout {
    int vertex;
    int degree;
    ArrayList<LinkedList<Integer>> nodes;
-   ArrayList<Integer> degreeList = new ArrayList<Integer>();
+   
    
    //Constructor
    public GraphLayout() {
@@ -27,15 +27,15 @@ public class GraphLayout {
    }
    
    //Forms adjacency list; contains connected vertices
-   public void addNeighbor(int node, int neighbor) {
+   public void addNode(int node, int adjNode) {
 	   if(nodes.size() < node+1) 
 		   addLinkedList(node);
-	   nodes.get(node).addLast(neighbor);   //Appends the specified element to the end of this list.
-	   if (nodes.size() < neighbor +1) addLinkedList(neighbor);
-	   nodes.get(neighbor).addLast(node);
+	   nodes.get(node).addLast(adjNode);   //Appends the specified element to the end of this list.
+	   if (nodes.size() < adjNode +1) addLinkedList(adjNode);
+	   nodes.get(adjNode).addLast(node);
    }
    
-   //This method removes node from graph and returns the updated list without the node
+   //Method removes node from graph and returns the updated list without the node
    public LinkedList<Integer> removeNode(int node){
 	   for(int neighbor : nodes.get(node))
 		   nodes.get(neighbor).remove((Integer) node);
