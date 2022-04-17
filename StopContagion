@@ -38,8 +38,8 @@ public class StopContagion {
 		 //This loop will execute tbe code block once, before checking if the condition is true
 		 // Then it will repeat the loop as long as the condition is true.
 		 do { int node = sc.nextInt();
-		       int neighbor = sc.nextInt();
-		       GraphLayout.graphLayout.addNeighbor(node, neighbor);
+		       int adjNode = sc.nextInt();
+		       GraphLayout.graphLayout.addNode(node, adjNode);
 		      
 		 } 
 		 while (sc.hasNextInt());
