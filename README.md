@@ -17,3 +17,5 @@ If no "-d" or "-r" arguments are given, then nodes will automatically be removed
 If both "-d" and "-r" arguments are input, then the program will only follow the "-d" argument. Thus, it is best to do either "-d" or "-r", not both. 
 
 Example Command Line input: java StopContagion -d 2 4 inputFile.txt
+
+*Please cite code you use*
