@@ -1,7 +1,13 @@
 # Project-3-CSC-172
 Name: Tochi Onwuasoanya
 NetID: tonwuaso
+Id#: 32075311
 Email: tonwuaso@u.rochester.edu
+Partner: Alex Donahue
+Partner: Sean Henry
+
+Alex Donaue ID: 31980289
+Sean Henry ID: 32031027
 
 This is the 3rd Project in CSC 172 and the main task was for us to build a program that reads a text file and build a graph from it. We also had to be able to remove the nodes by degree ("-d" argument) and by collective influence ("-r" argument). 
 This project contains 3 classes, GraphLayout.java, StopContagion.java, and CollectiveInfluence.java. 
